@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   BitcoinExchange.cpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcavanna <gcavanna@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: gcavanna <gcavanna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 13:16:56 by gcavanna          #+#    #+#             */
-/*   Updated: 2024/02/07 14:46:59 by gcavanna         ###   ########.fr       */
+/*   Updated: 2024/02/07 17:45:17 by gcavanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,57 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange &other)
     return *this;
 }
 
+double BitcoinExchange::stod(const std::string& str, size_t* pos = NULL)
+{
+    size_t i = 0;
+    double risultato = 0.0;
+    bool negativo = false;
+    bool parteDecimale = false;
+    double potenzaDecimale = 1.0;
+
+    // Salta gli spazi iniziali
+    while (i < str.length() && isspace(str[i]))
+        ++i;
+
+    // Gestisci il segno
+    if (str[i] == '-')
+    {
+        negativo = (str[i] == '-');
+        i++;
+    }
+    else if (str[i] == '+')
+        i++;
+
+    // Converti le cifre intere
+    while (i < str.length() && (isdigit(str[i]) || str[i] == '.')) 
+    {
+        if (str[i] == '.')
+            parteDecimale = true;
+        else 
+        {
+            if (parteDecimale)
+            {
+                potenzaDecimale *= 0.1;
+                risultato = risultato + (str[i] - '0') * potenzaDecimale;
+            } 
+            else 
+            {
+                if (risultato > (1.7976931348623158e+308 - (str[i] - '0')) / 10)
+                    throw std::out_of_range("stod: Overflow or out of range");
+                risultato = risultato * 10.0 + (str[i] - '0');
+            }
+        }
+        ++i;
+    }
+
+    // Imposta la posizione del primo carattere non numerico
+    if (pos != NULL)
+        *pos = i;
+
+    // Applica il segno
+    return (negativo ? -risultato : risultato);
+}
+
 bool BitcoinExchange::loadExchangeRates(const std::string& filename)
 {
     std::ifstream file(filename.c_str());
@@ -44,7 +95,7 @@ bool BitcoinExchange::loadExchangeRates(const std::string& filename)
             {
                 try
                 {
-                    double rate = std::stod(rateStr);
+                    double rate = BitcoinExchange::stod(rateStr);
                     _exchangeRates[date] = rate;
                 }
                 catch(const std::exception& e)
@@ -71,14 +122,13 @@ bool BitcoinExchange::parseLine(const std::string& line, std::string& date, doub
         {
             try
             {
-                value = std::stod(token);
+                value = BitcoinExchange::stod(token);
                 return (value >= 0 && value <= 1000);
             }
             catch(const std::exception& e)
             {
                 return false;
-            }
-            
+            }    
         }
     }
     return false;

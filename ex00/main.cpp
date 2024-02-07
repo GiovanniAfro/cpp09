@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcavanna <gcavanna@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: gcavanna <gcavanna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 13:05:12 by gcavanna          #+#    #+#             */
-/*   Updated: 2024/02/07 14:46:57 by gcavanna         ###   ########.fr       */
+/*   Updated: 2024/02/07 17:41:56 by gcavanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int main(int ac, char **av)
 
     BitcoinExchange btc;
 
-    if (!btc.loadExchangeRates("exchange_rates.csv"))
+    if (!btc.loadExchangeRates("data.csv"))
     {
         std::cerr << "Errore: impossibile caricare i tassi di cambio. \n";
         return 1;

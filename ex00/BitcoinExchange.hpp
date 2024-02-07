@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   BitcoinExchange.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcavanna <gcavanna@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: gcavanna <gcavanna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 13:06:18 by gcavanna          #+#    #+#             */
-/*   Updated: 2024/02/07 14:46:58 by gcavanna         ###   ########.fr       */
+/*   Updated: 2024/02/07 16:10:51 by gcavanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ class BitcoinExchange
     private:
         std::map<std::string, double> _exchangeRates;
         std::string     findClosetDate(const std::string& date);
+        static double stod(const std::string& str, size_t* pos);
 };
 
 #endif 
