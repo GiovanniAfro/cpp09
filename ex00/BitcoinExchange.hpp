@@ -6,7 +6,7 @@
 /*   By: gcavanna <gcavanna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 13:06:18 by gcavanna          #+#    #+#             */
-/*   Updated: 2024/02/07 16:10:51 by gcavanna         ###   ########.fr       */
+/*   Updated: 2024/02/09 18:03:07 by gcavanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <iomanip>
 #include <map>
 
 class BitcoinExchange

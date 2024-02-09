@@ -6,7 +6,7 @@
 /*   By: gcavanna <gcavanna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 13:16:56 by gcavanna          #+#    #+#             */
-/*   Updated: 2024/02/07 17:45:17 by gcavanna         ###   ########.fr       */
+/*   Updated: 2024/02/09 19:01:52 by gcavanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,12 +118,13 @@ bool BitcoinExchange::parseLine(const std::string& line, std::string& date, doub
     if (std::getline(iss, token, '|'))
     {
         date = token;
-        if (std::getline(iss, token, '|'))
+        if (std::getline(iss, token))
         {
             try
             {
-                value = BitcoinExchange::stod(token);
-                return (value >= 0 && value <= 1000);
+                size_t pos;
+                value = BitcoinExchange::stod(token, &pos);
+                return (pos == token.length() && value >= 0 && value <= 1000);
             }
             catch(const std::exception& e)
             {
@@ -137,23 +138,34 @@ bool BitcoinExchange::parseLine(const std::string& line, std::string& date, doub
 double BitcoinExchange::calculateBitcoinValue(const std::string& date, double value)
 {
     std::string closestDate = findClosetDate(date);
-    double exchangeRate = _exchangeRates[closestDate];
+    std::map<std::string, double>::const_iterator it = _exchangeRates.find(closestDate);
 
-    if (exchangeRate != 0)
-        return value * exchangeRate;
+    if (it != _exchangeRates.end())
+        return value * it->second;
     return -1;
 }
 
 std::string BitcoinExchange::findClosetDate(const std::string& date)
 {
     std::map<std::string, double>::iterator it = _exchangeRates.lower_bound(date);
-    if (it == _exchangeRates.begin())
-        return it -> first;
+    if (it == _exchangeRates.begin() || it->first == date)
+        return it->first;
     else if (it == _exchangeRates.end())
-        return std::prev(it)->first;
+    {
+        std::map<std::string, double>::iterator last = _exchangeRates.begin();
+        std::map<std::string, double>::iterator next = last;
+
+        while (next != _exchangeRates.end())
+        {
+            last = next;
+            next++;
+        }
+
+        return last->first;
+    }
     else
     {
-        std::map<std::string, double>::iterator prev = std::prev(it);
-        return (date.compare(it->first) - date.compare(prev->first) < 0) ? it->first : prev->first;
+        --it;
+        return it->first;
     }
 }

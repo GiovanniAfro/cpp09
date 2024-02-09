@@ -6,7 +6,7 @@
 /*   By: gcavanna <gcavanna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 13:05:12 by gcavanna          #+#    #+#             */
-/*   Updated: 2024/02/07 17:41:56 by gcavanna         ###   ########.fr       */
+/*   Updated: 2024/02/09 18:50:16 by gcavanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,20 @@ int main(int ac, char **av)
     while (std::getline(inputFile, line)) {
         std::string date;
         double value;
-        if (btc.parseLine(line, date, value)) {
+        if (btc.parseLine(line, date, value))
+        {
             // Calcoliamo il valore dei bitcoin
             double bitcoinValue = btc.calculateBitcoinValue(date, value);
-            if (bitcoinValue >= 0) {
-                std::cout << date << " => " << value << " = " << bitcoinValue << std::endl;
-            } else {
-                std::cerr << "Errore: valore non valido.\n";
+            if (bitcoinValue >= 0)  
+            {
+                std::cout << std::fixed << std::setprecision(1);
+                std::cout << date << " => " << value << " = " << bitcoinValue <<std::endl;
             }
-        } else {
+            else 
+                std::cerr << "Errore: valore non valido.\n";
+        } 
+        else 
             std::cerr << "Errore: formato di input non valido.\n";
-        }
     }
 
     inputFile.close();
