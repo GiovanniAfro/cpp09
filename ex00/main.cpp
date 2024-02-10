@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcavanna <gcavanna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcavanna <gcavanna@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 13:05:12 by gcavanna          #+#    #+#             */
-/*   Updated: 2024/02/09 18:50:16 by gcavanna         ###   ########.fr       */
+/*   Updated: 2024/02/10 13:45:58 by gcavanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ int main(int ac, char **av)
         std::cerr << "Errore: impossibile aprire il file.\n";
         return 1;
     }
+    
+    std::string header;
+    std::getline(inputFile, header);
 
     BitcoinExchange btc;
 
@@ -36,7 +39,8 @@ int main(int ac, char **av)
     }
 
     std::string line;
-    while (std::getline(inputFile, line)) {
+    while (std::getline(inputFile, line))
+    {
         std::string date;
         double value;
         if (btc.parseLine(line, date, value))
@@ -45,14 +49,10 @@ int main(int ac, char **av)
             double bitcoinValue = btc.calculateBitcoinValue(date, value);
             if (bitcoinValue >= 0)  
             {
-                std::cout << std::fixed << std::setprecision(1);
+                std::cout << std::fixed << std::setprecision(5);
                 std::cout << date << " => " << value << " = " << bitcoinValue <<std::endl;
             }
-            else 
-                std::cerr << "Errore: valore non valido.\n";
         } 
-        else 
-            std::cerr << "Errore: formato di input non valido.\n";
     }
 
     inputFile.close();

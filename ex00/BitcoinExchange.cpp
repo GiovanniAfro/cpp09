@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   BitcoinExchange.cpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcavanna <gcavanna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gcavanna <gcavanna@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 13:16:56 by gcavanna          #+#    #+#             */
-/*   Updated: 2024/02/09 19:01:52 by gcavanna         ###   ########.fr       */
+/*   Updated: 2024/02/10 13:43:05 by gcavanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,14 +117,71 @@ bool BitcoinExchange::parseLine(const std::string& line, std::string& date, doub
 
     if (std::getline(iss, token, '|'))
     {
+        // Parsing dell'anno, mese e giorno
+        int year, month, day;
+        try
+        {
+            year = std::stoi(token.substr(0, 4));
+            month = std::stoi(token.substr(5, 2));
+            day = std::stoi(token.substr(8, 2));
+        }
+        catch (const std::invalid_argument& e)
+        {
+            std::cerr << "Error: bad input => " << token << std::endl;
+            return false;
+        }
+
+        // Controllo che l'anno sia valido (tra 1900 e 2100, ad esempio)
+        if (year < 2009 || year > 2100)
+        {
+            std::cerr << "Error: bad input => " << token << std::endl;
+            return false;
+        }
+
+        // Controllo che il mese sia compreso tra 1 e 12
+        if (month < 1 || month > 12)
+        {
+            std::cerr << "Error: bad input => " << token << std::endl;
+            return false;
+        }
+
+        // Definizione del numero di giorni per ogni mese (senza considerare gli anni bisestili)
+        int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+        // Controllo che il giorno sia valido per il mese specificato
+        if (day < 1 || day > daysInMonth[month - 1])
+        {
+            std::cerr << "Error: bad input => " << token << std::endl;
+            return false;
+        }
+
         date = token;
+
         if (std::getline(iss, token))
         {
             try
             {
                 size_t pos;
                 value = BitcoinExchange::stod(token, &pos);
-                return (pos == token.length() && value >= 0 && value <= 1000);
+
+                // Controllo che il numero abbia il formato corretto e sia compreso tra 0 e 1000
+                if (pos != token.length())
+                {
+                    std::cerr << "Error: bad input => " << token << std::endl;
+                    return false;
+                }
+                if (value < 0)
+                {
+                    std::cerr << "Error: not a positive number." << std::endl;
+                    return false;
+                }
+                if (value > 1000)
+                {
+                    std::cerr << "Error: too large a number." << std::endl;
+                    return false;
+                }
+                
+                return true;
             }
             catch(const std::exception& e)
             {
