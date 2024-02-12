@@ -6,7 +6,7 @@
 /*   By: gcavanna <gcavanna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 13:06:18 by gcavanna          #+#    #+#             */
-/*   Updated: 2024/02/09 18:03:07 by gcavanna         ###   ########.fr       */
+/*   Updated: 2024/02/12 16:03:00 by gcavanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <string>
 #include <iomanip>
 #include <map>
+#include <climits>
 
 class BitcoinExchange
 {
@@ -36,7 +37,8 @@ class BitcoinExchange
     private:
         std::map<std::string, double> _exchangeRates;
         std::string     findClosetDate(const std::string& date);
-        static double stod(const std::string& str, size_t* pos);
+        int stoi(const std::string& str, size_t* pos);
+        double stod(const std::string& str, size_t* pos);
 };
 
 #endif 

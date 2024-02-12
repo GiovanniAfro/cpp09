@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RPN.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcavanna <gcavanna@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: gcavanna <gcavanna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 18:32:04 by gcavanna          #+#    #+#             */
-/*   Updated: 2024/02/11 20:03:31 by gcavanna         ###   ########.fr       */
+/*   Updated: 2024/02/12 15:54:56 by gcavanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,57 @@ RPN &RPN::operator=(const RPN &other)
     if (this != &other)
         _operands = other._operands;
     return *this;
+}
+
+double RPN::stod(const std::string& str, size_t* pos = NULL)
+{
+    size_t i = 0;
+    double risultato = 0.0;
+    bool negativo = false;
+    bool parteDecimale = false;
+    double potenzaDecimale = 1.0;
+
+    // Salta gli spazi iniziali
+    while (i < str.length() && isspace(str[i]))
+        ++i;
+
+    // Gestisci il segno
+    if (str[i] == '-')
+    {
+        negativo = (str[i] == '-');
+        i++;
+    }
+    else if (str[i] == '+')
+        i++;
+
+    // Converti le cifre intere
+    while (i < str.length() && (isdigit(str[i]) || str[i] == '.')) 
+    {
+        if (str[i] == '.')
+            parteDecimale = true;
+        else 
+        {
+            if (parteDecimale)
+            {
+                potenzaDecimale *= 0.1;
+                risultato = risultato + (str[i] - '0') * potenzaDecimale;
+            } 
+            else 
+            {
+                if (risultato > (1.7976931348623158e+308 - (str[i] - '0')) / 10)
+                    throw std::out_of_range("stod: Overflow or out of range");
+                risultato = risultato * 10.0 + (str[i] - '0');
+            }
+        }
+        ++i;
+    }
+
+    // Imposta la posizione del primo carattere non numerico
+    if (pos != NULL)
+        *pos = i;
+
+    // Applica il segno
+    return (negativo ? -risultato : risultato);
 }
 
 bool RPN::isOperator(char c)
@@ -61,7 +112,7 @@ double RPN::calculate(const std::string &expression)
     while (iss >> token)
     {
         if (isdigit(token[0]))
-            _operands.push(std::stod(token));
+            _operands.push(RPN::stod(token));
         else if (isOperator(token[0]))
         {
             double operands2 = _operands.top();

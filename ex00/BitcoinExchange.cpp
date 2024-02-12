@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   BitcoinExchange.cpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcavanna <gcavanna@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: gcavanna <gcavanna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 13:16:56 by gcavanna          #+#    #+#             */
-/*   Updated: 2024/02/10 13:43:05 by gcavanna         ###   ########.fr       */
+/*   Updated: 2024/02/12 16:02:17 by gcavanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,41 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange &other)
     if (this != &other)
         _exchangeRates = other._exchangeRates;
     return *this;
+}
+
+int BitcoinExchange::stoi(const std::string& str, size_t* pos = NULL) 
+{
+    size_t i = 0;
+    int risultato = 0;
+    bool negativo = false;
+
+    // Salta gli spazi iniziali
+    while (i < str.length() && isspace(str[i]))
+        ++i;
+
+    // Gestisci il segno
+    if (str[i] == '-' || str[i] == '+')
+    {
+        negativo = (str[i] == '-');
+        ++i;
+    }
+
+    // Converti le cifre in intero
+    while (i < str.length() && isdigit(str[i]))
+    {
+        int cifra = str[i] - '0';
+        if (risultato > (INT_MAX - cifra) / 10)
+            throw std::out_of_range("stoi: Overflow or out of range");
+        risultato = risultato * 10 + cifra;
+        ++i;
+    }
+
+    // Imposta la posizione del primo carattere non numerico
+    if (pos != NULL)
+        *pos = i;
+
+    // Applica il segno
+    return (negativo ? -risultato : risultato);
 }
 
 double BitcoinExchange::stod(const std::string& str, size_t* pos = NULL)
@@ -121,9 +156,9 @@ bool BitcoinExchange::parseLine(const std::string& line, std::string& date, doub
         int year, month, day;
         try
         {
-            year = std::stoi(token.substr(0, 4));
-            month = std::stoi(token.substr(5, 2));
-            day = std::stoi(token.substr(8, 2));
+            year = BitcoinExchange::stoi(token.substr(0, 4));
+            month = BitcoinExchange::stoi(token.substr(5, 2));
+            day = BitcoinExchange::stoi(token.substr(8, 2));
         }
         catch (const std::invalid_argument& e)
         {
