@@ -6,7 +6,7 @@
 /*   By: gcavanna <gcavanna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 18:32:04 by gcavanna          #+#    #+#             */
-/*   Updated: 2024/02/12 15:54:56 by gcavanna         ###   ########.fr       */
+/*   Updated: 2024/02/13 12:52:56 by gcavanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,9 +111,9 @@ double RPN::calculate(const std::string &expression)
 
     while (iss >> token)
     {
-        if (isdigit(token[0]))
+        if (isdigit(token[0]) && token.length() == 1)
             _operands.push(RPN::stod(token));
-        else if (isOperator(token[0]))
+        else if (isOperator(token[0]) && token.length() == 1) 
         {
             double operands2 = _operands.top();
             _operands.pop();

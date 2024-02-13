@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gcavanna <gcavanna@student.42firenze.it    +#+  +:+       +#+         #
+#    By: gcavanna <gcavanna@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/01 13:50:09 by gcavanna          #+#    #+#              #
-#    Updated: 2024/02/13 10:59:50 by gcavanna         ###   ########.fr        #
+#    Updated: 2024/02/13 12:18:34 by gcavanna         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = PmergeME
+NAME = PmergeMe
 
-SRC = main.cpp PmergeME.cpp
+SRC = main.cpp PmergeMe.cpp
 CC = c++
 FLAGS = -Wall -Wextra -Werror -std=c++98
 RM = rm -rf
