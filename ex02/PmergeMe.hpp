@@ -6,7 +6,7 @@
 /*   By: gcavanna <gcavanna@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 20:53:27 by gcavanna          #+#    #+#             */
-/*   Updated: 2024/02/11 22:01:34 by gcavanna         ###   ########.fr       */
+/*   Updated: 2024/02/13 11:04:42 by gcavanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,19 @@ private:
     std::list<int> list_container;
     double vec_time;
     double list_time;
-
-public:
-    PmergeMe(int argc, char **argv);
-    void run();
-
-private:
     void displaySequence(const std::vector<int>& sequence);
     void displaySequence(const std::list<int>& sequence);
     void displayTimeDifference(double elapsed_time_seconds);
     void mergeInsertSortVector();
     void mergeInsertSortList();
+    void fordJohnsonSortVector();
+    void fordJohnsonSortList();
+    void sortAdjacent(std::vector<int>& sequence);
+
+public:
+    PmergeMe(int ac, char **av);
+    void run();
+
 };
 
-#endif // PMERGEME_HPP
+#endif 
