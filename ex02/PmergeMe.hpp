@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PmergeMe.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcavanna <gcavanna@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: gcavanna <gcavanna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 20:53:27 by gcavanna          #+#    #+#             */
-/*   Updated: 2024/02/13 11:04:42 by gcavanna         ###   ########.fr       */
+/*   Updated: 2024/02/13 12:58:53 by gcavanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,10 @@ private:
 
 public:
     PmergeMe(int ac, char **av);
+    PmergeMe(const PmergeMe &other);
+    ~PmergeMe();
+
+    PmergeMe& operator=(const PmergeMe &other);
     void run();
 
 };

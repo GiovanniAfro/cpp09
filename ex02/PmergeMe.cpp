@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PmergeMe.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gcavanna <gcavanna@student.42firenze.it    +#+  +:+       +#+        */
+/*   By: gcavanna <gcavanna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 21:24:59 by gcavanna          #+#    #+#             */
-/*   Updated: 2024/02/13 10:49:50 by gcavanna         ###   ########.fr       */
+/*   Updated: 2024/02/13 14:27:24 by gcavanna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,22 @@ PmergeMe::PmergeMe(int ac, char **av) : vec_time(0), list_time(0)
         vec_container.push_back(num);
         list_container.push_back(num);
     }
+}
+
+PmergeMe::PmergeMe(const PmergeMe &other) : vec_container(other.vec_container), list_container(other.list_container), vec_time(other.vec_time), list_time(other.list_time) {}
+
+PmergeMe::~PmergeMe() {}
+
+PmergeMe& PmergeMe::operator=(const PmergeMe &Other)
+{
+    if (this != &Other)
+    {
+        vec_container = Other.vec_container;
+        list_container = Other.list_container;
+        vec_time = Other.vec_time;
+        list_time = Other.list_time;
+    }
+    return *this;
 }
 
 void PmergeMe::run()
